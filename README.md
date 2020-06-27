@@ -1,0 +1,2 @@
+# Soundy
+Discord Sound Bot
