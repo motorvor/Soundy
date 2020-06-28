@@ -77,8 +77,8 @@ exports.googleVoice = (message, text) => {
             "speakingRate":"1.00"
         }
     }
-    ttsClient.synthesizeSpeech(data, async (err, response) => {
-      fs.writeFile('stream.mp3', response.audioContent, 'binary', err => {});
+    ttsClient.synthesizeSpeech(data, (err, response) => {
+      fs.writeFileSync('stream.mp3', response.audioContent, 'binary', err => {});
       this.playSound(message.member.voice.channel, './stream.mp3');
     });
   } else {
