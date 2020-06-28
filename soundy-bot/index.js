@@ -8,7 +8,7 @@ const { prefix, token } = require('./config.json');
 const vt = require('./vars');
 
 // Common Functions
-const { updateSoundsList, isSpeaking, playSound } = require('./common');
+const { updateSoundsList, isSpeaking, playSound, vConnect, vDisconnect } = require('./common');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -66,10 +66,49 @@ client.on('message', (message) => {
 
 });
 
+const { Readable } = require('stream');
+
+const SILENCE_FRAME = Buffer.from([0xF8, 0xFF, 0xFE]);
+
+class Silence extends Readable {
+  _read() {
+    this.push(SILENCE_FRAME);
+  }
+}
+
 // When the Voice State Updates (VS = Voice State)
 client.on('voiceStateUpdate', (oldVS, newVS) => {
   // If the voice channels are the same, do nothing
   if (oldVS.channelID === newVS.channelID) return;
+
+  // if (oldVS.channelID === '726818855732641823' && oldVS.member.id !== '351523490794438659' ) {
+  //   vDisconnect();
+  // }
+
+  // if (newVS.member.id !== '351523490794438659' && newVS.channelID === '726818855732641823') {
+  //   vConnect(newVS.channel).then(async(connection) => {
+  //     connectionB = await vConnect(newVS.channel);
+  //     let audioStream;
+  //     connection.play('../soundy-clips/uploads/ding.wav');
+  //     connection.on('ready', () => {
+        
+  //     });
+  //     connection.on('speaking', (user, speaking) => {
+  //       if (!user || user.bot) return;
+  //       if (speaking) {
+  //         audioStream = connection.receiver.createStream(user.id);
+  //         setTimeout(() => {
+  //           let dispatch = connectionB.play(audioStream, { type: 'opus', volume: 5 })
+  //           dispatch.on('finish', () => {
+  //             audioStream.destroy();
+  //           });
+  //         }, 500);
+  //       }
+  //     });
+      
+  //   });
+    
+  // }
   // 
   if (newVS.member.id === '351523490794438659') return;
   // If the new voice channel is Why Hello There, play Why Hello There clip
@@ -78,7 +117,8 @@ client.on('voiceStateUpdate', (oldVS, newVS) => {
       playSound(newVS.channel, '../soundy-clips/whyhello.wav')
     }
   // If the new voice channel is GIBBY, play GIBBY clip
-  } else if (newVS.channelID === '503633665318846474') {
+  }
+  if (newVS.channelID === '503633665318846474') {
     if (!isSpeaking()) {
       playSound(newVS.channel, '../soundy-clips/GIBBY.wav');
     }
@@ -90,8 +130,7 @@ function setThreeAM() {
   rule.tz = 'US/Eastern';
   rule.hour = 3
   schedule.scheduleJob(rule, () => {
-    let voiceChannels = client.channels.filter((channel) => channel.type == 'voice').array();
-    let mostPopulatedVC = voiceChannels.reduce((prev, current) => prev.members.size > current.members.size ? prev : current);
+    let mostPopulatedVC = client.channels.cache.filter((channel) => channel.type == 'voice').reduce((prev, current) => prev.members.size > current.members.size ? prev : current);
     if (mostPopulatedVC) {
       playSound(mostPopulatedVC, '../soundy-clips/3am.wav');
     }

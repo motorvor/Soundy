@@ -1,5 +1,7 @@
 const fs = require('fs');
-const path = require('path');
+const textToSpeech = require('@google-cloud/text-to-speech');
+const ttsClient = new textToSpeech.TextToSpeechClient();
+
 let {
   vConnection,
   vDispatcher,
@@ -13,6 +15,10 @@ exports.updateSoundsList = () => {
       sounds.push(file.substring(0, file.length - 4));
     }
   });
+}
+
+exports.getRandomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 exports.getSounds = () => {
@@ -53,5 +59,43 @@ exports.playSound = (channel, sound) => {
     })
   } catch (err) {
     console.log('Error in playSound', err);
+  }
+}
+exports.googleVoice = (message, text) => {
+  if (!this.isSpeaking()) {
+    let data = { 
+        "input": {
+            "text": text
+        },
+        "voice": {
+            "languageCode":"en-US",
+            "name":"en-US-Wavenet-F"
+        },
+        "audioConfig": {
+            "audioEncoding":"MP3",
+            "pitch":"0.00",
+            "speakingRate":"1.00"
+        }
+    }
+    ttsClient.synthesizeSpeech(data, async (err, response) => {
+      fs.writeFile('stream.mp3', response.audioContent, 'binary', err => {});
+      this.playSound(message.member.voice.channel, './stream.mp3');
+    });
+  } else {
+    this.sendAndDelete(message, 'I\'ll assume you\'re deaf and can\'t fucking hear me.', 5000)
+  }
+}
+exports.canPlay = (message) => {
+  if (!this.isSpeaking()) {
+    let voiceChannel = message.member.voice.channel;
+    if (voiceChannel) {
+      return true;
+    } else {
+      this.sendAndDelete(message, 'Look with your special eyes. You\'re not in a voice channel.', 5000);
+      return false;
+    }
+  } else {
+    this.sendAndDelete(message, 'Wait your turn you fucking child.', 5000);
+    return false;
   }
 }
