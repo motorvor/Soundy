@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 let {
   vConnection,
   vDispatcher,
@@ -8,7 +9,7 @@ let {
 
 exports.updateSoundsList = () => {
   sounds = [];
-  fs.readdir(`${process.env.PWD}/soundy-clips/`, (err, files) => {
+  fs.readdir(path.resolve(process.env.PWD, './soundy-clips/'), (err, files) => {
     files.forEach(file => {
       if (file !== 'uploads' && file !== 'goodnight' && file !== 'roulette') {
         sounds.push(file.substring(0, file.length - 4));

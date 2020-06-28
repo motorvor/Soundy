@@ -1,3 +1,4 @@
+const path = require('path');
 const { isSpeaking, getSounds, sendAndDelete, playSound } = require('../common');
 
 function checkSounds(possibleSound) {
@@ -13,7 +14,7 @@ module.exports = {
       if (!isSpeaking()) {
         let voiceChannel = message.member.voice.channel;
         if (voiceChannel) {
-          playSound(voiceChannel, `${process.env.PWD}/soundy-clips/${selectedSound}.wav`);
+          playSound(voiceChannel, path.resolve(process.env.PWD, `./soundy-clips/${selectedSound}.wav`));
         } else {
           sendAndDelete(message, 'Look with your special eyes. You\'re not in a voice channel.', 5000)
         }
