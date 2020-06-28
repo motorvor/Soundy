@@ -1,0 +1,1 @@
+worker: cd ./soundy-bot && node index.js
