@@ -1,1 +1,1 @@
-worker: cd ./soundy-bot && node index.js
+worker: node ./soundy-bot/index.js
