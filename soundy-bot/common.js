@@ -10,6 +10,7 @@ exports.updateSoundsList = () => {
   sounds = [];
   fs.readdirSync('../soundy-clips/').forEach(file => {
     if (file !== 'uploads' && file !== 'goodnight' && file !== 'roulette') {
+      console.log(file);
       sounds.push(file.substring(0, file.length - 4));
     }
   });
