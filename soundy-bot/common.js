@@ -78,6 +78,7 @@ exports.googleVoice = (message, text) => {
         }
     }
     ttsClient.synthesizeSpeech(data, (err, response) => {
+      console.log(err);
       fs.writeFileSync('stream.mp3', response.audioContent, 'binary', err => {});
       this.playSound(message.member.voice.channel, './stream.mp3');
     });
