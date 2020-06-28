@@ -6,15 +6,12 @@ let {
   sounds
 } = require('./vars');
 
-
 exports.updateSoundsList = () => {
   sounds = [];
-  fs.readdir(path.resolve(process.env.PWD, './soundy-clips/'), (err, files) => {
-    files.forEach(file => {
-      if (file !== 'uploads' && file !== 'goodnight' && file !== 'roulette') {
-        sounds.push(file.substring(0, file.length - 4));
-      }
-    });
+  fs.readdirSync('../soundy-clips/').forEach(file => {
+    if (file !== 'uploads' && file !== 'goodnight' && file !== 'roulette') {
+      sounds.push(file.substring(0, file.length - 4));
+    }
   });
 }
 
