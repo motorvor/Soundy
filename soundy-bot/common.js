@@ -1,6 +1,8 @@
 const fs = require('fs');
 const textToSpeech = require('@google-cloud/text-to-speech');
-const ttsClient = new textToSpeech.TextToSpeechClient();
+const ttsClient = new textToSpeech.TextToSpeechClient({
+  keyFilename: './googleAuth.json',
+});
 
 let {
   vConnection,
@@ -78,7 +80,6 @@ exports.googleVoice = (message, text) => {
         }
     }
     ttsClient.synthesizeSpeech(data, (err, response) => {
-      console.log(err);
       fs.writeFileSync('stream.mp3', response.audioContent, 'binary', err => {});
       this.playSound(message.member.voice.channel, './stream.mp3');
     });
