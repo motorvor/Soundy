@@ -1,1 +1,1 @@
-worker: node ./soundy-bot/index.js
+worker: sh -c 'cd ./soundy-bot/ && node index.js'
