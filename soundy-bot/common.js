@@ -66,18 +66,18 @@ exports.playSound = (channel, sound) => {
 exports.googleVoice = (message, text) => {
   if (!this.isSpeaking()) {
     let data = { 
-        "input": {
-            "text": text
-        },
-        "voice": {
-            "languageCode":"en-US",
-            "name":"en-US-Wavenet-F"
-        },
-        "audioConfig": {
-            "audioEncoding":"MP3",
-            "pitch":"0.00",
-            "speakingRate":"1.00"
-        }
+      "input": {
+        "text": text
+      },
+      "voice": {
+        "languageCode":"en-US",
+        "name":"en-US-Wavenet-F"
+      },
+      "audioConfig": {
+        "audioEncoding":"MP3",
+        "pitch":"0.00",
+        "speakingRate":"1.00"
+      }
     }
     ttsClient.synthesizeSpeech(data, (err, response) => {
       fs.writeFileSync('stream.mp3', response.audioContent, 'binary', err => {});

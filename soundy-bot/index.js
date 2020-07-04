@@ -129,6 +129,7 @@ function setThreeAM() {
   let rule = new schedule.RecurrenceRule();
   rule.tz = 'US/Eastern';
   rule.hour = 3
+  rule.minute = 0;
   schedule.scheduleJob(rule, () => {
     let mostPopulatedVC = client.channels.cache.filter((channel) => channel.type == 'voice').reduce((prev, current) => prev.members.size > current.members.size ? prev : current);
     if (mostPopulatedVC) {
