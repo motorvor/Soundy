@@ -22,9 +22,9 @@ module.exports = {
           setTimeout(() => {
             dispatch1.pause();
             let dispatch2 = connection.play(`../soundy-clips/${sound2}.wav`, { volume: 2 });
-            dispatch2.on('finish', () => {
+            setTimeout(() => {
               vDisconnect();
-            });
+            }, duration1 - dispatch1.streamTime);
           }, getRandomPause(duration1));
         })
       } catch (err) {
