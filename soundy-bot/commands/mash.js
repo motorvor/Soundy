@@ -24,7 +24,7 @@ module.exports = {
             let dispatch2 = connection.play(`../soundy-clips/${sound2}.wav`, { volume: 2 });
             setTimeout(() => {
               vDisconnect();
-            }, duration1 - dispatch1.streamTime);
+            }, ((duration1 * 1000) - dispatch1.streamTime) + 1000);
           }, getRandomPause(duration1));
         })
       } catch (err) {
