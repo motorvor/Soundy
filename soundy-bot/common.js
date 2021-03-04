@@ -81,7 +81,6 @@ exports.googleVoice = async (message, text) => {
       }
     }
     const [response, err] = await ttsClient.synthesizeSpeech(data);
-    console.log(err);
     const writeFile = util.promisify(fs.writeFile);
     await writeFile('stream.mp3', response.audioContent, 'binary');
     this.playSound(message.member.voice.channel, './stream.mp3');
