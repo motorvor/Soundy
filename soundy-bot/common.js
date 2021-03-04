@@ -1,4 +1,5 @@
 const fs = require('fs');
+const util = require('util');
 const textToSpeech = require('@google-cloud/text-to-speech');
 const ttsClient = new textToSpeech.TextToSpeechClient({
   keyFilename: './googleAuth.json',
@@ -63,7 +64,7 @@ exports.playSound = (channel, sound) => {
     console.log('Error in playSound', err);
   }
 }
-exports.googleVoice = (message, text) => {
+exports.googleVoice = async (message, text) => {
   if (!this.isSpeaking()) {
     let data = { 
       "input": {
@@ -79,10 +80,10 @@ exports.googleVoice = (message, text) => {
         "speakingRate":"1.00"
       }
     }
-    ttsClient.synthesizeSpeech(data, (err, response) => {
-      fs.writeFileSync('stream.mp3', response.audioContent, 'binary', err => {});
-      this.playSound(message.member.voice.channel, './stream.mp3');
-    });
+    const [response] = await ttsClient.synthesizeSpeech(data);
+    const writeFile = util.promisify(fs.writeFile);
+    await writeFile('stream.mp3', response.audioContent, 'binary');
+    this.playSound(message.member.voice.channel, './stream.mp3');
   } else {
     this.sendAndDelete(message, 'I\'ll assume you\'re deaf and can\'t fucking hear me.', 5000)
   }
