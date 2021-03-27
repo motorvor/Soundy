@@ -5,9 +5,9 @@ module.exports = {
 	description: 'Read some solid voice',
 	aliases: [],
 	execute(message) {
-		message.delete(2000);
+		message.delete({ timeout: 2000 });
     request('https://api.adviceslip.com/advice', (error, response, body) =>{
-      googleVoice(message, JSON.parse(body).slip.advice)
+      googleVoice(message, JSON.parse(body).slip.advice);
     });
 	},
 };

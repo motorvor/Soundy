@@ -76,8 +76,8 @@ exports.googleVoice = async (message, text) => {
       },
       "audioConfig": {
         "audioEncoding":"MP3",
-        "pitch":"0.00",
-        "speakingRate":"1.00"
+        "pitch":"-20.00",
+        "speakingRate":"0.65"
       }
     }
     const [response, err] = await ttsClient.synthesizeSpeech(data);
