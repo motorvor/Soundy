@@ -1,4 +1,4 @@
-const c = require('../common.js');
+const { googleVoice } = require('../common');
 const request = require('request');
 module.exports = {
 	name: 'advice',
@@ -6,8 +6,8 @@ module.exports = {
 	aliases: [],
 	execute(message) {
 		message.delete(2000);
-        request('https://api.adviceslip.com/advice', (error, response, body) =>{
-            c.googleVoice(message, JSON.parse(body).slip.advice)
-        });
+    request('https://api.adviceslip.com/advice', (error, response, body) =>{
+      googleVoice(message, JSON.parse(body).slip.advice)
+    });
 	},
 };
