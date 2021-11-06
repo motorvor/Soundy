@@ -28,7 +28,7 @@ client.once('ready', () => {
 
 client.on('message', (message) => {
   // Delete message if user is Music Bot ID
-  if (message.author.id === '235088799074484224') { message.delete({ timeout: 20000 }).catch(); }
+  if (message.author.id === '614109280508968980') { message.delete({ timeout: 20000 }).catch(); }
   // Delete message if it begins with '!' to help clean up music bot clutter.
   if (message.content.startsWith('!')) { message.delete({ timeout: 20000 }); }
 
